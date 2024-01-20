@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "Dosu.sln",
+    "projects": [
+      "Dosu.Game\\Dosu.Game.csproj",
+      "Dosu.Resources\\Dosu.Resources.csproj",
+      "Dosu.iOS\\Dosu.iOS.csproj"
+    ]
+  }
+}

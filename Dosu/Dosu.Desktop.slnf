@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "Dosu.sln",
+    "projects": [
+      "Dosu.Desktop\\Dosu.Desktop.csproj",
+      "Dosu.Game\\Dosu.Game.csproj",
+      "Dosu.Game.Tests\\Dosu.Game.Tests.csproj",
+      "Dosu.Resources\\Dosu.Resources.csproj"
+    ]
+  }
+}
