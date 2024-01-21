@@ -1,6 +1,6 @@
 using osu.Framework.Graphics;
 
-namespace Dosu.Game;
+namespace Dosu.Game.Objects;
 
 public static class CardUtils
 {
@@ -22,7 +22,7 @@ public static class CardUtils
 
             case CardColor.Blue: return Colour4.Blue;
 
-            default: return Colour4.White;
+            default: return Colour4.Black;
         }
     }
 
