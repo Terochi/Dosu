@@ -1,14 +1,24 @@
+#define LOCALHOST
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dosu.Game.Online.Requests;
+using Dosu.Game.Online.Requests.Responses;
 
 namespace Dosu.Game.Online;
 
-public static class Client
+public class Client
 {
-    private static SocketIOClient.SocketIO io;
+#if LOCALHOST
+    private const string uri = "http://localhost:3000/";
+#else
+    private const string uri = "http://pawele.possessed.us/";
+#endif
 
-    private static SocketIOClient.SocketIO client
+    private SocketIOClient.SocketIO io;
+
+    private SocketIOClient.SocketIO client
     {
         get
         {
@@ -17,72 +27,82 @@ public static class Client
         }
     }
 
-    public static Task Connect()
+    public Task Connect()
     {
         return client.ConnectAsync();
     }
 
-    public static Task Disconnect()
+    public Task Disconnect()
     {
         return client.DisconnectAsync();
     }
 
-    public static event Action<List<Lobby>> OnLobbyList;
-    public static event Action OnLobbyLeave;
-    public static event Action OnLobbyJoin;
-    public static event Action<Lobby> OnLobbyUpdate;
-    public static event Action<EditCommand> OnEdit;
-    public static event Action<GameState> OnGameUpdate;
-    public static event Action<Popup> OnPopup;
+    public event Action OnConnect;
+    public event Action OnDisconnect;
+    public event Action<string> OnError;
+    public event Action OnPing;
+    public event Action<TimeSpan> OnPong;
+    public event Action<int> OnReconnect;
+    public event Action<int> OnReconnectTry;
+    public event Action<string> OnReconnectError;
+    public event Action OnReconnectFail;
 
-    public static Task CreateLobby(string lobbyName, string username)
+    public event Action<List<Lobby>> OnLobbyList;
+    public event Action OnLobbyLeave;
+    public event Action OnLobbyJoin;
+    public event Action<Lobby> OnLobbyUpdate;
+    public event Action<EditCommand> OnEdit;
+    public event Action<GameState> OnGameUpdate;
+    public event Action<Popup> OnPopup;
+
+    public Task CreateLobby(string lobbyName, string username)
     {
         return client.EmitAsync("serverCreateLobby", lobbyName, username);
     }
 
-    public static Task RefreshLobbies()
+    public Task RefreshLobbies()
     {
         return client.EmitAsync("serverRefreshLobby");
     }
 
-    public static Task JoinLobby(string lobbyId, string username)
+    public Task JoinLobby(string lobbyId, string username)
     {
         return client.EmitAsync("serverJoinLobby", lobbyId, username);
     }
 
-    public static Task LeaveLobby()
+    public Task LeaveLobby()
     {
         return client.EmitAsync("serverLeaveLobby");
     }
 
-    public static Task KickPlayer(string username)
+    public Task KickPlayer(string username)
     {
         return client.EmitAsync("serverLeaveLobby", username);
     }
 
-    public static Task StartGame()
+    public Task StartGame()
     {
         return client.EmitAsync("serverGameStart");
     }
 
-    public static Task StopGame()
+    public Task StopGame()
     {
         return client.EmitAsync("serverGameStop");
     }
 
-    public static Task RestartGame()
+    public Task RestartGame()
     {
         return client.EmitAsync("serverGameRestart");
     }
 
-    public static Task UpdateGame(GameCommand command)
+    public Task UpdateGame(GameCommand command)
     {
         return client.EmitAsync("serverGameUpdate", command.Action, command.Value);
     }
 
-    private static void initialize()
+    private void initialize()
     {
-        io = new SocketIOClient.SocketIO("http://pawele.possessed.us/");
+        io = new SocketIOClient.SocketIO(uri);
 
         io.On("clientLobbyList", response => OnLobbyList?.Invoke(response.GetValue<List<Lobby>>()));
         io.On("clientEdit", response => OnEdit?.Invoke(response.GetValue<EditCommand>()));
@@ -91,5 +111,15 @@ public static class Client
         io.On("clientPopup", response => OnPopup?.Invoke(response.GetValue<Popup>()));
         io.On("clientUpdateLobby", response => OnLobbyUpdate?.Invoke(response.GetValue<Lobby>()));
         io.On("clientGameUpdate", response => OnGameUpdate?.Invoke(response.GetValue<GameState>()));
+
+        io.OnConnected += (_, _) => OnConnect?.Invoke();
+        io.OnDisconnected += (_, _) => OnDisconnect?.Invoke();
+        io.OnError += (_, errorMessage) => OnError?.Invoke(errorMessage);
+        io.OnPing += (_, _) => OnPing?.Invoke();
+        io.OnPong += (_, span) => OnPong?.Invoke(span);
+        io.OnReconnected += (_, attemptCount) => OnReconnect?.Invoke(attemptCount);
+        io.OnReconnectAttempt += (_, attemptCount) => OnReconnectTry?.Invoke(attemptCount);
+        io.OnReconnectError += (_, exception) => OnReconnectError?.Invoke(exception.Message);
+        io.OnReconnectFailed += (_, _) => OnReconnectFail?.Invoke();
     }
 }

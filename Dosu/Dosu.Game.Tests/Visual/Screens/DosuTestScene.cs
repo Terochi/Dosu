@@ -1,8 +1,8 @@
 using osu.Framework.Testing;
 
-namespace Dosu.Game.Tests.Visual
+namespace Dosu.Game.Tests.Visual.Screens
 {
-    public partial class DosuTestScene : TestScene
+    public abstract partial class DosuTestScene : TestScene
     {
         protected override ITestSceneTestRunner CreateRunner() => new DosuTestSceneTestRunner();
 

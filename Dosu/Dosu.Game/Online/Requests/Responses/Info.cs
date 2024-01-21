@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Dosu.Game.Online;
+namespace Dosu.Game.Online.Requests.Responses;
 
 public class Info
 {

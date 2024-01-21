@@ -1,4 +1,4 @@
-namespace Dosu.Game.Online;
+namespace Dosu.Game.Online.Requests;
 
 public class GameCommand : ICommand<int>
 {

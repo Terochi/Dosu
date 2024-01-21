@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Dosu.Game.Online;
+namespace Dosu.Game.Online.Requests.Responses;
 
 public class EditCommand : ICommand<bool>
 {

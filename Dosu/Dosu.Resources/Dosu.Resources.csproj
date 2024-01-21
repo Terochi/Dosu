@@ -3,9 +3,12 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Fonts\**\*"/>
-        <EmbeddedResource Include="Samples\**\*"/>
-        <EmbeddedResource Include="Textures\**\*"/>
-        <EmbeddedResource Include="Tracks\**\*"/>
+        <EmbeddedResource Include="Fonts\**\*" />
+        <EmbeddedResource Include="Samples\**\*" />
+        <EmbeddedResource Include="Textures\**\*" />
+        <EmbeddedResource Include="Tracks\**\*" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Textures\" />
     </ItemGroup>
 </Project>
