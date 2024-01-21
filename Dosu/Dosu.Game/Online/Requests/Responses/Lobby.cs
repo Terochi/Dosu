@@ -3,23 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace Dosu.Game.Online.Requests.Responses;
 
-public class Lobby
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
+public record Lobby (
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("maxPlayers")] int MaxPlayers,
+    [property: JsonPropertyName("players")] IReadOnlyList<Player> Players,
+    [property: JsonPropertyName("modifiers")] Modifiers Modifiers,
+    [property: JsonPropertyName("started")] bool Started,
+    [property: JsonPropertyName("_id")] string ID
+);
 
-    [JsonPropertyName("maxPlayers")]
-    public int MaxPlayers { get; set; }
-
-    [JsonPropertyName("players")]
-    public List<Player> Players { get; set; }
-
-    [JsonPropertyName("modifiers")]
-    public Modifiers Modifiers { get; set; }
-
-    [JsonPropertyName("started")]
-    public bool Started { get; set; }
-
-    [JsonPropertyName("_id")]
-    public string ID { get; set; }
-}

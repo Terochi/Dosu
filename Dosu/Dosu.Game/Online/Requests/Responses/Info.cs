@@ -4,25 +4,13 @@ using Dosu.Game.Objects;
 
 namespace Dosu.Game.Online.Requests.Responses;
 
-public class Info
-{
-    [JsonPropertyName("drawPileCount")]
-    public int DrawPileCount { get; set; }
+    public record Info (
+        [property: JsonPropertyName("drawPileCount")] int DrawPileCount,
+        [property: JsonPropertyName("dropPileLast")] Card LastDroppedCard,
+        [property: JsonPropertyName("players")] IReadOnlyList<GamePlayer> Players,
+        [property: JsonPropertyName("lockin")] IReadOnlyList<GamePlayer> LockedIn,
+        [property: JsonPropertyName("currentPlayerIndex")] int CurrentPlayerIndex,
+        [property: JsonPropertyName("direction")] bool Clockwise,
+        [property: JsonPropertyName("animation")] int AnimationIndex
+    ){ public Direction Direction => Clockwise ? Direction.Clockwise : Direction.CounterClockwise; }
 
-    [JsonPropertyName("dropPileLast")]
-    public Card LastDroppedCard { get; set; }
-
-    [JsonPropertyName("players")]
-    public List<GamePlayer> Players { get; set; }
-
-    [JsonPropertyName("currentPlayerIndex")]
-    public int CurrentPlayerIndex { get; set; }
-
-    [JsonPropertyName("direction")]
-    private bool clockwise { get; set; }
-
-    public Direction Direction => clockwise ? Direction.Clockwise : Direction.CounterClockwise;
-
-    [JsonPropertyName("animation")]
-    public int AnimationIndex { get; set; }
-}

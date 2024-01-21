@@ -77,7 +77,7 @@ namespace Dosu.Game.Screens
                         },
                         new BasicButton
                         {
-                            Action = () => client.KickPlayer(username),
+                            Action = () => client.KickPlayer("username"),
                             Text = "Kick",
                             Size = new Vector2(50)
                         },
@@ -105,7 +105,12 @@ namespace Dosu.Game.Screens
                         },
                         new BasicButton
                         {
-                            Action = () => client.UpdateGame(new GameCommand { Action = action.Text, Value = int.Parse(value.Text) }),
+                            Action = () => {
+                                int? value = null;
+                                if (int.TryParse(this.value.Text, out int result))
+                                    value = result;
+                                client.UpdateGame(new GameCommand (action.Text, value));
+                            },
                             Text = "Update",
                             Size = new Vector2(50)
                         },
@@ -131,6 +136,7 @@ namespace Dosu.Game.Screens
             };
             client.OnEdit += command => Logger.Log($"Command: {command.Action}");
             client.OnPopup += popup => Logger.Log($"Popup: {popup.Text}");
+            client.OnEndscreen += endscreen => Logger.Log($"Game ended! time: {endscreen.GameTime}, winner: {endscreen.Scoreboard.FirstOrDefault()?.Username}");
             client.OnGameUpdate += state =>
             {
                 Logger.Log($"Direction: {state.Info?.Direction.ToString()}");
@@ -151,7 +157,7 @@ namespace Dosu.Game.Screens
                         int cardIndex = i;
                         cards.Add(new DrawableCard(state.Cards[cardIndex])
                         {
-                            Action = () => client.UpdateGame(new GameCommand { Action = "playCard", Value = cardIndex })
+                            Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex))
                         });
                     }
                 });
