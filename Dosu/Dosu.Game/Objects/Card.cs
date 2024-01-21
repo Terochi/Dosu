@@ -6,7 +6,7 @@ public static class CardUtils
 {
     private static int cardRange => Card.YellowSelect - Card.RedSelect;
 
-    public static Card MakeCard(CardColor color, CardType type) => (Card)((int)color * (Card.YellowSelect - Card.RedSelect) + type);
+    public static Card MakeCard(CardType type, CardColor color) => (Card)((int)color * (Card.YellowSelect - Card.RedSelect) + type);
 
     public static CardColor Color(this Card card) => (CardColor)((int)card / cardRange);
 
@@ -34,13 +34,13 @@ public static class CardUtils
     {
         switch (type)
         {
-            case CardType.Select: return "Select";
+            case CardType.Select: return "C";
 
             case CardType.PlusFour: return "+4";
 
-            case CardType.Reverse: return "Reverse";
+            case CardType.Reverse: return "<=>";
 
-            case CardType.Skip: return "Skip";
+            case CardType.Skip: return "X";
 
             case CardType.PlusTwo: return "+2";
 

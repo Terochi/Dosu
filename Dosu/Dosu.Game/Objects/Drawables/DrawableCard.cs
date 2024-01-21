@@ -1,62 +1,53 @@
-using System;
-using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
-using osuTK;
 
 namespace Dosu.Game.Objects.Drawables;
 
-public partial class DrawableCard : ClickableContainer
+public abstract partial class DrawableCard : ClickableContainer
 {
+    // protected const float ASPECT_RATIO = 89f / 64f;
+    protected const float ASPECT_RATIO = 1.5F;
+
     public readonly Card Card;
 
-    private Box background;
-    private SpriteText text;
-
-    private const float aspect_ratio = 89f / 64f;
-    private static readonly float diagonal_rotation = (float)MathHelper.RadiansToDegrees(Math.Atan(aspect_ratio));
-
-    private Vector2 drawSizePrev = Vector2.Zero;
-
-    public DrawableCard(Card card)
-        : this(card.Type(), card.Color())
+    protected DrawableCard(Card card)
     {
+        Card = card;
     }
 
-    public DrawableCard(CardType type, CardColor color)
+    protected DrawableCard(CardType type, CardColor color)
     {
-        Card = CardUtils.MakeCard(color, type);
-        Masking = true;
-        BorderThickness = 10;
-        BorderColour = Colour4.White;
-        CornerRadius = 20;
-        CornerExponent = 2;
+        Card = CardUtils.MakeCard(type, color);
+    }
+}
 
-        FillMode = FillMode.Fit;
-        RelativeSizeAxes = Axes.Both;
-        FillAspectRatio = 1f / aspect_ratio;
+public abstract class DrawableCardBuilder
+{
+    public abstract DrawableCard CreateCard(Card card);
+    public abstract DrawableCard CreateCard(CardType type, CardColor color);
+}
 
-        string cardText = type.AsString();
-        bool isLongText = cardText.Length > 2;
+public class DrawableCardDefaultBuilder : DrawableCardBuilder
+{
+    public override DrawableCard CreateCard(Card card)
+    {
+        return new DrawableCardDefault(card);
+    }
 
-        Children = new Drawable[]
-        {
-            background = new Box
-            {
-                RelativeSizeAxes = Axes.Both,
-                Colour = color.AsColour4()
-            },
-            text = new SpriteText
-            {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Text = cardText,
-                Font = FontUsage.Default.With(size: isLongText ? 36 : 60),
-                Rotation = isLongText ? diagonal_rotation : 0f,
-                Colour = Colour4.White,
-                Shadow = true
-            }
-        };
+    public override DrawableCard CreateCard(CardType type, CardColor color)
+    {
+        return new DrawableCardDefault(type, color);
+    }
+}
+
+public class DrawableCardTexturedBuilder : DrawableCardBuilder
+{
+    public override DrawableCard CreateCard(Card card)
+    {
+        return new DrawableCardTextured(card);
+    }
+
+    public override DrawableCard CreateCard(CardType type, CardColor color)
+    {
+        return new DrawableCardTextured(type, color);
     }
 }

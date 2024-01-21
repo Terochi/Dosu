@@ -22,7 +22,6 @@ public partial class CardTestScene : DosuTestScene
             Spacing = new Vector2(5, 0),
             Direction = FillDirection.Horizontal
         });
-
-        AddStep("Add random card", () => cards.Add(new DrawableCard((Card)Random.Shared.Next((int)Card.WildPlusFour))));
+        AddStep("Add random card", () => cards.Add(new DrawableCardDefault((Card)Random.Shared.Next((int)Card.WildPlusFour))));
     }
 }

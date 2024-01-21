@@ -20,6 +20,8 @@ namespace Dosu.Game.Screens
     {
         private const string username = "test_user";
 
+        private readonly DrawableCardBuilder builder = new DrawableCardTexturedBuilder();
+
         [Resolved]
         private Client client { get; set; } = null!;
 
@@ -77,7 +79,7 @@ namespace Dosu.Game.Screens
                         },
                         new BasicButton
                         {
-                            Action = () => client.KickPlayer("username"),
+                            Action = () => client.KickPlayer(username),
                             Text = "Kick",
                             Size = new Vector2(50)
                         },
@@ -155,10 +157,9 @@ namespace Dosu.Game.Screens
                     for (var i = 0; i < state.Cards.Count; i++)
                     {
                         int cardIndex = i;
-                        cards.Add(new DrawableCard(state.Cards[cardIndex])
-                        {
-                            Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex))
-                        });
+                        DrawableCard drawableCard = builder.CreateCard(state.Cards[cardIndex]);
+                        drawableCard.Action = () => client.UpdateGame(new GameCommand { Action = "playCard", Value = cardIndex });
+                        cards.Add(drawableCard);
                     }
                 });
             };
@@ -172,10 +173,9 @@ namespace Dosu.Game.Screens
             if (topCard != null)
                 container.Remove(topCard, true);
 
-            container.Add(topCard = new DrawableCard(newCard)
-            {
-                Size = new Vector2(0.25f)
-            });
+            topCard = builder.CreateCard(newCard);
+            topCard.Size = new Vector2(0.25f);
+            container.Add(topCard);
         }
     }
 }
