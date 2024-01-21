@@ -1,3 +1,4 @@
+using System;
 using Dosu.Game.Objects.Drawables;
 using Dosu.Game.Online.Requests.Responses;
 using Dosu.Game.Tests.Visual.Screens;
@@ -23,7 +24,7 @@ public partial class LobbyEntryTestScene : DosuTestScene
         });
 
         AddSliderStep("height", 50, 300, 150, h => height = h);
-        AddStep("Add lobby", () => lobbies.Add(new DrawableLobbyEntry(new Lobby())
+        AddStep("Add lobby", () => lobbies.Add(new DrawableLobbyEntry(new Lobby(null, 0, ArraySegment<Player>.Empty, null, false, null))
         {
             RelativeSizeAxes = Axes.X,
             Height = height

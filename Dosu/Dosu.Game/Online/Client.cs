@@ -107,13 +107,13 @@ public class Client
         io = new SocketIOClient.SocketIO(uri);
 
         io.On("clientLobbyList", response => OnLobbyList?.Invoke(response.GetValue<List<Lobby>>()));
-        io.On("clientEdit", response => OnEdit?.Invoke(new EditCommand (response.GetValue<string>(), response.GetValue<bool>(1))));
+        io.On("clientEdit", response => OnEdit?.Invoke(new EditCommand(response.GetValue<string>(), response.GetValue<bool>(1))));
         io.On("clientLeaveLobby", _ => OnLobbyLeave?.Invoke());
         io.On("clientJoinedLobby", _ => OnLobbyJoin?.Invoke());
         io.On("clientPopup", response => OnPopup?.Invoke(response.GetValue<Popup>()));
         io.On("clientEndscreen", response => OnEndscreen?.Invoke(response.GetValue<Endscreen>()));
         io.On("clientUpdateLobby", response => OnLobbyUpdate?.Invoke(response.GetValue<Lobby>()));
-        io.On("clientGameUpdate", response => OnGameUpdate?.Invoke(new GameState (response.GetValue<Info>(), response.GetValue<List<Card>>(1))));
+        io.On("clientGameUpdate", response => OnGameUpdate?.Invoke(new GameState(response.GetValue<Info>(), response.GetValue<List<Card>>(1))));
 
         io.OnConnected += (_, _) => OnConnect?.Invoke();
         io.OnDisconnected += (_, _) => OnDisconnect?.Invoke();

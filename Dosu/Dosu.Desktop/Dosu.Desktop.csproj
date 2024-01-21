@@ -9,9 +9,12 @@
         <FileVersion>0.0.0</FileVersion>
     </PropertyGroup>
     <ItemGroup Label="Project References">
-        <ProjectReference Include="..\Dosu.Game\Dosu.Game.csproj"/>
+        <ProjectReference Include="..\Dosu.Game\Dosu.Game.csproj" />
     </ItemGroup>
     <ItemGroup Label="Resources">
-        <EmbeddedResource Include="game.ico"/>
+        <EmbeddedResource Include="game.ico" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="obj\Debug\net7.0\" />
     </ItemGroup>
 </Project>

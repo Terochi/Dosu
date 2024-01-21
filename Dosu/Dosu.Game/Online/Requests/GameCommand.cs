@@ -1,6 +1,6 @@
 namespace Dosu.Game.Online.Requests;
 
-public record GameCommand (
+public record GameCommand(
     string Action,
     int? Value
 );

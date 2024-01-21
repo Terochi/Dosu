@@ -107,11 +107,12 @@ namespace Dosu.Game.Screens
                         },
                         new BasicButton
                         {
-                            Action = () => {
+                            Action = () =>
+                            {
                                 int? value = null;
                                 if (int.TryParse(this.value.Text, out int result))
                                     value = result;
-                                client.UpdateGame(new GameCommand (action.Text, value));
+                                client.UpdateGame(new GameCommand(action.Text, value));
                             },
                             Text = "Update",
                             Size = new Vector2(50)
@@ -158,7 +159,7 @@ namespace Dosu.Game.Screens
                     {
                         int cardIndex = i;
                         DrawableCard drawableCard = builder.CreateCard(state.Cards[cardIndex]);
-                        drawableCard.Action = () => client.UpdateGame(new GameCommand { Action = "playCard", Value = cardIndex });
+                        drawableCard.Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex));
                         cards.Add(drawableCard);
                     }
                 });

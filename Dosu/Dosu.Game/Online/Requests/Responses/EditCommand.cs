@@ -1,6 +1,6 @@
 namespace Dosu.Game.Online.Requests.Responses;
 
-public record EditCommand (
+public record EditCommand(
     string Action,
     bool Value
 );

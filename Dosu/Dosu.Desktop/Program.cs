@@ -1,6 +1,6 @@
-﻿using osu.Framework.Platform;
+﻿using Dosu.Game;
 using osu.Framework;
-using Dosu.Game;
+using osu.Framework.Platform;
 
 namespace Dosu.Desktop
 {
