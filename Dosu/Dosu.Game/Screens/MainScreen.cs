@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Dosu.Game.Objects;
+using Dosu.Game.Objects.Drawables;
 using Dosu.Game.Online;
 using Dosu.Game.Online.Requests;
 using Dosu.Game.Online.Requests.Responses;
@@ -7,7 +9,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
@@ -25,7 +26,9 @@ namespace Dosu.Game.Screens
         private List<Lobby> lobbies;
         private BasicTextBox action;
         private BasicTextBox value;
-        private FillFlowContainer<SpriteText> cards;
+        private FillFlowContainer<DrawableCard> cards;
+        private FillFlowContainer container;
+        private DrawableCard topCard;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -37,7 +40,7 @@ namespace Dosu.Game.Screens
                     RelativeSizeAxes = Axes.Both,
                     Colour = Colour4.Black
                 },
-                new FillFlowContainer
+                container = new FillFlowContainer
                 {
                     Spacing = Vector2.One,
                     Children = new Drawable[]
@@ -106,11 +109,11 @@ namespace Dosu.Game.Screens
                             Text = "Update",
                             Size = new Vector2(50)
                         },
-                        cards = new FillFlowContainer<SpriteText>
+                        cards = new FillFlowContainer<DrawableCard>
                         {
                             RelativeSizeAxes = Axes.X,
-                            Height = 100,
-                            Spacing = Vector2.One,
+                            Height = 150,
+                            Spacing = new Vector2(5, 0),
                             Direction = FillDirection.Horizontal
                         }
                     },
@@ -133,23 +136,22 @@ namespace Dosu.Game.Screens
                 Logger.Log($"Direction: {state.Info?.Direction.ToString()}");
                 Schedule(() =>
                 {
-                    var hand = state.Cards;
-                    if (hand == null)
-                        return;
-
                     if (state.Info != null)
-                        hand.Add(state.Info.LastDroppedCard);
+                    {
+                        updateTopCard(state.Info.LastDroppedCard);
+                    }
+
+                    if (state.Cards == null)
+                        return;
 
                     cards.Clear();
 
-                    foreach (Card card in hand)
+                    for (var i = 0; i < state.Cards.Count; i++)
                     {
-                        cards.Add(new SpriteText
+                        int cardIndex = i;
+                        cards.Add(new DrawableCard(state.Cards[cardIndex])
                         {
-                            RelativeSizeAxes = Axes.Y,
-                            Width = 67,
-                            Colour = card.Color().AsColour4(),
-                            Text = card.Type().AsString()
+                            Action = () => client.UpdateGame(new GameCommand { Action = "playCard", Value = cardIndex })
                         });
                     }
                 });
@@ -157,6 +159,17 @@ namespace Dosu.Game.Screens
             client.OnLobbyUpdate += lobby => Logger.Log($"Updated {lobby.Name}");
 
             client.Connect();
+        }
+
+        private void updateTopCard(Card newCard)
+        {
+            if (topCard != null)
+                container.Remove(topCard, true);
+
+            container.Add(topCard = new DrawableCard(newCard)
+            {
+                Size = new Vector2(0.25f)
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Dosu.Game.Objects;
 
 namespace Dosu.Game.Online.Requests.Responses;
 
