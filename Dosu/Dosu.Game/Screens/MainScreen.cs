@@ -9,16 +9,18 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Graphics;
 
 namespace Dosu.Game.Screens
 {
     public partial class MainScreen : Screen
     {
-        private const string username = "test_user";
+        private const string username = "user_name";
 
         private readonly DrawableCardBuilder builder = new DrawableCardTexturedBuilder();
 
@@ -31,6 +33,7 @@ namespace Dosu.Game.Screens
         private FillFlowContainer<DrawableCard> cards;
         private FillFlowContainer container;
         private DrawableCard topCard;
+        private SpriteText cardCount;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -109,20 +112,48 @@ namespace Dosu.Game.Screens
                         {
                             Action = () =>
                             {
-                                int? value = null;
-                                if (int.TryParse(this.value.Text, out int result))
-                                    value = result;
-                                client.UpdateGame(new GameCommand(action.Text, value));
+                                int? val = null;
+                                if (int.TryParse(value.Text, out int result))
+                                    val = result;
+                                client.UpdateGame(new GameCommand(action.Text, val));
                             },
                             Text = "Update",
                             Size = new Vector2(50)
+                        },
+                        new BasicButton
+                        {
+                            Action = () => client.UpdateGame(new GameCommand("colorPicker", 0)),
+                            BackgroundColour = Color4.Red,
+                            Size = new Vector2(50)
+                        },
+                        new BasicButton
+                        {
+                            Action = () => client.UpdateGame(new GameCommand("colorPicker", 1)),
+                            BackgroundColour = Color4.Gold,
+                            Size = new Vector2(50)
+                        },
+                        new BasicButton
+                        {
+                            Action = () => client.UpdateGame(new GameCommand("colorPicker", 2)),
+                            BackgroundColour = Color4.Lime,
+                            Size = new Vector2(50)
+                        },
+                        new BasicButton
+                        {
+                            Action = () => client.UpdateGame(new GameCommand("colorPicker", 3)),
+                            BackgroundColour = Color4.Aqua,
+                            Size = new Vector2(50)
+                        },
+                        cardCount = new SpriteText
+                        {
+                            Font = FontUsage.Default.With(size: 30)
                         },
                         cards = new FillFlowContainer<DrawableCard>
                         {
                             RelativeSizeAxes = Axes.X,
                             Height = 150,
-                            Spacing = new Vector2(5, 0),
-                            Direction = FillDirection.Horizontal
+                            Spacing = new Vector2(5),
+                            Direction = FillDirection.Full,
                         }
                     },
                     RelativeSizeAxes = Axes.Both,
@@ -142,16 +173,21 @@ namespace Dosu.Game.Screens
             client.OnEndscreen += endscreen => Logger.Log($"Game ended! time: {endscreen.GameTime}, winner: {endscreen.Scoreboard.FirstOrDefault()?.Username}");
             client.OnGameUpdate += state =>
             {
-                Logger.Log($"Direction: {state.Info?.Direction.ToString()}");
+                // Logger.Log($"Direction: {state.Info?.Direction.ToString()}");
                 Schedule(() =>
                 {
                     if (state.Info != null)
                     {
+                        cardCount.Text =
+                            $"{string.Join(" | ", state.Info.Players.Select(p => $"{p.Username}: {p.CardCount}"))} => "
+                            + $"Current: {state.Info.Players[state.Info.CurrentPlayerIndex].Username}";
                         updateTopCard(state.Info.LastDroppedCard);
                     }
 
                     if (state.Cards == null)
                         return;
+
+                    List<DrawableCard> drawableCards = new List<DrawableCard>(state.Cards.Count);
 
                     cards.Clear();
 
@@ -160,8 +196,12 @@ namespace Dosu.Game.Screens
                         int cardIndex = i;
                         DrawableCard drawableCard = builder.CreateCard(state.Cards[cardIndex]);
                         drawableCard.Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex));
-                        cards.Add(drawableCard);
+                        drawableCards.Add(drawableCard);
                     }
+
+                    drawableCards.Sort((e1, e2) => e1.Card - e2.Card);
+
+                    cards.AddRange(drawableCards);
                 });
             };
             client.OnLobbyUpdate += lobby => Logger.Log($"Updated {lobby.Name}");
@@ -176,6 +216,7 @@ namespace Dosu.Game.Screens
 
             topCard = builder.CreateCard(newCard);
             topCard.Size = new Vector2(0.25f);
+            topCard.Action = () => client.UpdateGame(new GameCommand("draw", null));
             container.Add(topCard);
         }
     }
