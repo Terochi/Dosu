@@ -1,5 +1,6 @@
-using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osuTK;
@@ -8,46 +9,111 @@ namespace Dosu.Game.Objects.Drawables;
 
 public partial class DrawableCardDefault : DrawableCard
 {
-    private static readonly float diagonal_rotation = (float)MathHelper.RadiansToDegrees(Math.Atan(ASPECT_RATIO));
+    private const float center_scale = 0.375f;
+    private const float corner_scale = 0.125f;
 
     public DrawableCardDefault(Card card)
-        : this(card.Type(), card.Color())
+        : base(card)
     {
     }
 
     public DrawableCardDefault(CardType type, CardColor color)
         : base(type, color)
     {
-        Masking = true;
-        BorderThickness = 10;
-        BorderColour = Colour4.White;
-        CornerRadius = 20;
-        CornerExponent = 2;
+    }
 
-        FillMode = FillMode.Fit;
-        RelativeSizeAxes = Axes.Both;
-        FillAspectRatio = 1f / ASPECT_RATIO;
-
-        string cardText = type.AsString();
-        bool isLongText = cardText.Length > 3;
-
-        Children = new Drawable[]
+    [BackgroundDependencyLoader]
+    private void load()
+    {
+        float border = Height * 0.05f;
+        InternalChildren = new[]
         {
-            new Box
+            new Container
+            {
+                Masking = true,
+                BorderThickness = border,
+                BorderColour = Colour4.White,
+                CornerRadius = border * 2,
+
+                RelativeSizeAxes = Axes.Both,
+
+                Child = new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Card.Color().AsColour4()
+                }
+            },
+            new Container
             {
                 RelativeSizeAxes = Axes.Both,
-                Colour = color.AsColour4()
-            },
-            new SpriteText
-            {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Text = cardText,
-                Font = FontUsage.Default.With(size: isLongText ? 36 : 80),
-                Rotation = isLongText ? diagonal_rotation : 0f,
-                Colour = Colour4.White,
-                Shadow = true
+                Padding = new MarginPadding(border * 1.5f),
+                Children = new[]
+                {
+                    CardFont.GetCardFontDrawable(Card, Height * center_scale, true).With(d =>
+                    {
+                        d.Anchor = Anchor.Centre;
+                        d.Origin = Anchor.Centre;
+                        d.Colour = Colour4.White;
+                    }),
+                    CardFont.GetCardFontDrawable(Card, Height * corner_scale, true).With(d =>
+                    {
+                        d.Anchor = Anchor.TopLeft;
+                        d.Origin = Anchor.TopLeft;
+                        d.Colour = Colour4.White;
+                    }),
+                    CardFont.GetCardFontDrawable(Card, Height * corner_scale, true).With(d =>
+                    {
+                        d.Anchor = Anchor.BottomRight;
+                        d.Origin = Anchor.TopLeft;
+                        d.Colour = Colour4.White;
+                        d.Rotation = 180;
+                    })
+                }
             }
+        };
+    }
+}
+
+internal static class CardFont
+{
+    public static Drawable GetCardFontDrawable(Card card, float height, bool shadow = false)
+    {
+        var type = card.Type();
+
+        IconUsage? icon = null;
+
+        switch (type)
+        {
+            case CardType.Select:
+                icon = FontAwesome.Solid.Expand;
+                break;
+
+            case CardType.Reverse:
+                icon = FontAwesome.Solid.SyncAlt;
+                break;
+
+            case CardType.Skip:
+                icon = FontAwesome.Solid.Ban;
+                break;
+        }
+
+        if (icon != null)
+        {
+            return new SpriteIcon
+            {
+                Icon = icon.Value,
+                Size = new Vector2(height),
+                Shadow = shadow,
+                ShadowOffset = new Vector2(0.0f, height * 0.06f * 1.5f)
+            };
+        }
+
+        return new SpriteText
+        {
+            Text = type.AsString(),
+            Font = FrameworkFont.Regular.With(size: height * 1.5f, weight: "Bold"),
+            Shadow = shadow,
+            Margin = new MarginPadding { Top = -height * .25f, Bottom = -height * .25f }
         };
     }
 }

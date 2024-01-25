@@ -34,13 +34,13 @@ public static class CardUtils
     {
         switch (type)
         {
-            case CardType.Select: return "C";
+            case CardType.Select: return "select";
 
             case CardType.PlusFour: return "+4";
 
-            case CardType.Reverse: return "<=>";
+            case CardType.Reverse: return "reverse";
 
-            case CardType.Skip: return "X";
+            case CardType.Skip: return "skip";
 
             case CardType.PlusTwo: return "+2";
 

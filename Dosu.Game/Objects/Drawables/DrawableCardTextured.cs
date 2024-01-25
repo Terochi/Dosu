@@ -8,41 +8,31 @@ namespace Dosu.Game.Objects.Drawables;
 
 public partial class DrawableCardTextured : DrawableCard
 {
-    private const int cardWidth = 100;
-    private const int cardHeight = 150;
+    private const int card_texture_width = 100;
+    private const int card_texture_height = 150;
 
     public DrawableCardTextured(Card card)
         : base(card)
     {
-        Masking = true;
-        BorderThickness = 10;
-        BorderColour = Colour4.White;
-        CornerRadius = 20;
-        CornerExponent = 2;
     }
 
     public DrawableCardTextured(CardType type, CardColor color)
-        : this(CardUtils.MakeCard(type, color))
+        : base(type, color)
     {
     }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textures)
     {
-        FillMode = FillMode.Fit;
-        RelativeSizeAxes = Axes.Both;
-        FillAspectRatio = 1f / ASPECT_RATIO;
-
-        Children = new Drawable[]
+        InternalChild = new Sprite
         {
-            new Sprite
-            {
-                RelativeSizeAxes = Axes.Both,
-                Texture = new TextureRegion(textures.Get("cards"),
-                    new RectangleI((int)Card.Type() * cardWidth, (int)Card.Color() * cardHeight, cardWidth, cardHeight),
-                    WrapMode.None, WrapMode.None),
-                TextureRelativeSizeAxes = Axes.Both
-            }
+            RelativeSizeAxes = Axes.Both,
+            Texture = new TextureRegion(textures.Get("cards"),
+                new RectangleI(
+                    (int)Card.Type() * card_texture_width, (int)Card.Color() * card_texture_height,
+                    card_texture_width, card_texture_height),
+                WrapMode.None, WrapMode.None),
+            TextureRelativeSizeAxes = Axes.Both
         };
     }
 }

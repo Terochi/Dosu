@@ -1,13 +1,24 @@
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Input.Events;
+using osuTK;
 
 namespace Dosu.Game.Objects.Drawables;
 
 public abstract partial class DrawableCard : ClickableContainer
 {
-    // protected const float ASPECT_RATIO = 89f / 64f;
+    // protected const float ASPECT_RATIO = 1.390625F;
     protected const float ASPECT_RATIO = 1.5F;
 
     public readonly Card Card;
+
+    public override Vector2 Size => new(base.Size.X, base.Size.X * ASPECT_RATIO);
+
+    public override float Height
+    {
+        get => Width * ASPECT_RATIO;
+        set => base.Size = new Vector2(value / ASPECT_RATIO, value);
+    }
 
     protected DrawableCard(Card card)
     {
@@ -17,6 +28,20 @@ public abstract partial class DrawableCard : ClickableContainer
     protected DrawableCard(CardType type, CardColor color)
     {
         Card = CardUtils.MakeCard(type, color);
+    }
+
+    protected override bool OnHover(HoverEvent e)
+    {
+        this.MoveToY(-20, 60, Easing.InQuad);
+
+        return true;
+    }
+
+    protected override void OnHoverLost(HoverLostEvent e)
+    {
+        this.MoveToY(0, 60, Easing.OutQuad);
+
+        base.OnHoverLost(e);
     }
 }
 

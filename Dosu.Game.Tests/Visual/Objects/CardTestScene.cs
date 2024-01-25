@@ -10,9 +10,12 @@ namespace Dosu.Game.Tests.Visual.Objects;
 
 public partial class CardTestScene : DosuTestScene
 {
+    private FillFlowContainer<DrawableCard> cards;
+
     public CardTestScene()
     {
-        FillFlowContainer<DrawableCard> cards;
+        var defaultBuilder = new DrawableCardDefaultBuilder();
+        var texturedBuilder = new DrawableCardTexturedBuilder();
         Add(cards = new FillFlowContainer<DrawableCard>
         {
             Anchor = Anchor.Centre,
@@ -22,6 +25,20 @@ public partial class CardTestScene : DosuTestScene
             Spacing = new Vector2(5, 0),
             Direction = FillDirection.Horizontal
         });
-        AddStep("Add random card", () => cards.Add(new DrawableCardDefault((Card)Random.Shared.Next((int)Card.WildPlusFour))));
+
+        AddStep("Add all default types", () =>
+        {
+            addCard(Card.WildPlusFour, defaultBuilder);
+            addCard(Card.WildSelect, defaultBuilder);
+            addCard(Card.RedReverse, defaultBuilder);
+            addCard(Card.Red0, defaultBuilder);
+            addCard(Card.RedSkip, defaultBuilder);
+        });
+
+        AddStep("Add random default card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour), defaultBuilder));
+        AddStep("Add random textured card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour), texturedBuilder));
     }
+
+    private void addCard(Card card, DrawableCardBuilder builder) =>
+        cards.Add(builder.CreateCard(card).With(c => c.Height = cards.Height));
 }
