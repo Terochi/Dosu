@@ -16,11 +16,6 @@ public partial class DrawableCardTextured : DrawableCard
     {
     }
 
-    public DrawableCardTextured(CardType type, CardColor color)
-        : base(type, color)
-    {
-    }
-
     [BackgroundDependencyLoader]
     private void load(TextureStore textures)
     {

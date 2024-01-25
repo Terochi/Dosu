@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Layout;
 using osuTK;
 
 namespace Dosu.Game.Objects.Drawables;
@@ -12,20 +13,30 @@ public partial class DrawableCardDefault : DrawableCard
     private const float center_scale = 0.375f;
     private const float corner_scale = 0.125f;
 
+    private LayoutValue layoutCache = new LayoutValue(Invalidation.DrawSize);
+
     public DrawableCardDefault(Card card)
         : base(card)
     {
+        AddLayout(layoutCache);
     }
 
-    public DrawableCardDefault(CardType type, CardColor color)
-        : base(type, color)
+    protected override void Update()
     {
+        base.Update();
+
+        if (layoutCache.IsValid) return;
+
+        load();
+
+        layoutCache.Validate();
     }
 
     [BackgroundDependencyLoader]
     private void load()
     {
-        float border = Height * 0.05f;
+        float height = DrawRectangle.Height;
+        float border = height * 0.05f;
         InternalChildren = new[]
         {
             new Container
@@ -49,19 +60,19 @@ public partial class DrawableCardDefault : DrawableCard
                 Padding = new MarginPadding(border * 1.5f),
                 Children = new[]
                 {
-                    CardFont.GetCardFontDrawable(Card, Height * center_scale, true).With(d =>
+                    CardFont.GetCardFontDrawable(Card, height * center_scale, true).With(d =>
                     {
                         d.Anchor = Anchor.Centre;
                         d.Origin = Anchor.Centre;
                         d.Colour = Colour4.White;
                     }),
-                    CardFont.GetCardFontDrawable(Card, Height * corner_scale, true).With(d =>
+                    CardFont.GetCardFontDrawable(Card, height * corner_scale, true).With(d =>
                     {
                         d.Anchor = Anchor.TopLeft;
                         d.Origin = Anchor.TopLeft;
                         d.Colour = Colour4.White;
                     }),
-                    CardFont.GetCardFontDrawable(Card, Height * corner_scale, true).With(d =>
+                    CardFont.GetCardFontDrawable(Card, height * corner_scale, true).With(d =>
                     {
                         d.Anchor = Anchor.BottomRight;
                         d.Origin = Anchor.TopLeft;

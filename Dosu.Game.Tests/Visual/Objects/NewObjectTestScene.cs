@@ -46,13 +46,16 @@ public partial class NewObjectTestScene : TestScene
 
     private void addCard(Card card, DrawableCardBuilder builder)
     {
-        Container drawableCard;
-        cards.Add(drawableCard = new Container
+        DrawableCardContainer drawableCard;
+        cards.Add(drawableCard = new DrawableCardContainer
         {
+            Origin = Anchor.BottomCentre,
+            Size = new Vector2(67, 150),
             Child = builder.CreateCard(card).With(c =>
             {
                 c.Origin = Anchor.BottomCentre;
-                c.Height = 100;
+                c.Anchor = Anchor.BottomCentre;
+                c.RelativeSizeAxes = Axes.Both;
             })
         });
         cards.ChangeChildDepth(drawableCard, -(float)card);
