@@ -16,6 +16,7 @@ public partial class CircularFlowContainer<T> : FlowContainer<T>
     where T : Drawable
 {
     private Vector2 size;
+    private const float max_inbetween_space = 50;
 
     public override float Height
     {
@@ -72,13 +73,22 @@ public partial class CircularFlowContainer<T> : FlowContainer<T>
         float width = Width;
         //if (shouldBeBiggerArc) width -= Height;
         float circleRadius = (4 * Height * Height + width * width) / (8 * Height);
-        float arc = 2f * MathF.Asin(width / (2f * circleRadius)); // MathF.PI - MathF
+        float arc = 2f * MathF.Asin(width / (2f * circleRadius));
         //if (shouldBeBiggerArc) arc = MathF.Tau - arc;
-        float length = arc * circleRadius;
 
         float arcDelta = arc / (childCount + 1);
 
         float angle0 = (MathF.PI + arc) * 0.5f;
+
+        float length = arc * circleRadius;
+        float lengthDelta = length / (childCount + 1);
+
+        if (lengthDelta > max_inbetween_space)
+        {
+            float newArc = max_inbetween_space * (childCount + 1) / circleRadius;
+            arcDelta = newArc / (childCount + 1);
+            angle0 -= (arc - newArc) * 0.5f;
+        }
 
         for (var i = 0; i < children.Length; i++)
         {
@@ -87,7 +97,7 @@ public partial class CircularFlowContainer<T> : FlowContainer<T>
             float angle = angle0 - (i + 1) * arcDelta;
             child.Rotation = 90f - MathUtils.RadiansToDegrees(angle);
             yield return new Vector2(
-                (MathF.Cos(angle) * circleRadius + Width / 2),
+                (MathF.Cos(angle) * circleRadius + Width  * 0.5f),
                 -(MathF.Sin(angle) * circleRadius - circleRadius));
         }
     }

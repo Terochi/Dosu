@@ -13,7 +13,7 @@ public partial class DrawableCardDefault : DrawableCard
     private const float center_scale = 0.375f;
     private const float corner_scale = 0.125f;
 
-    private LayoutValue layoutCache = new LayoutValue(Invalidation.DrawSize);
+    private readonly LayoutValue layoutCache = new LayoutValue(Invalidation.DrawSize);
 
     public DrawableCardDefault(Card card)
         : base(card)
