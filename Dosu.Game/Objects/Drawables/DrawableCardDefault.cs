@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Layout;
 using osuTK;
+using osuTK.Graphics;
 
 namespace Dosu.Game.Objects.Drawables;
 
@@ -115,7 +116,8 @@ internal static class CardFont
                 Icon = icon.Value,
                 Size = new Vector2(height),
                 Shadow = shadow,
-                ShadowOffset = new Vector2(0.0f, height * 0.06f * 1.5f)
+                ShadowColour = Color4.Black,
+                ShadowOffset = new Vector2(-height * 0.03f * 1.5f, height * 0.045f * 1.5f)
             };
         }
 
@@ -124,6 +126,8 @@ internal static class CardFont
             Text = type.AsString(),
             Font = FrameworkFont.Regular.With(size: height * 1.5f, weight: "Bold"),
             Shadow = shadow,
+            ShadowColour = Color4.Black,
+            ShadowOffset = new Vector2(-0.03f, 0.045f),
             Margin = new MarginPadding { Top = -height * .25f, Bottom = -height * .25f }
         };
     }

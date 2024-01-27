@@ -9,11 +9,11 @@ using osuTK;
 
 namespace Dosu.Game.Tests.Visual.Objects;
 
-public partial class NewObjectTestScene : TestScene
+public partial class CardHandTestScene : TestScene
 {
     private readonly DrawableHand cards;
 
-    public NewObjectTestScene()
+    public CardHandTestScene()
     {
         Child = new Container
         {
@@ -46,7 +46,7 @@ public partial class NewObjectTestScene : TestScene
         cards.Add(drawableCard = new DrawableCardContainer(card, skin)
         {
             Origin = Anchor.BottomCentre,
-            Size = new Vector2(67, 120),
+            Size = new Vector2(67, 125),
         });
         cards.ChangeChildDepth(drawableCard, -(float)card);
         cards.SetLayoutPosition(drawableCard, (float)card);

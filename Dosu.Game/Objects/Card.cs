@@ -14,13 +14,13 @@ public static class CardUtils
     {
         switch (color)
         {
-            case CardColor.Red: return Colour4.Red;
+            case CardColor.Red: return new Colour4(200, 20, 20, 255);
 
-            case CardColor.Yellow: return Colour4.Yellow;
+            case CardColor.Yellow: return new Colour4(240, 220, 40, 255);
 
-            case CardColor.Green: return Colour4.Green;
+            case CardColor.Green: return new Colour4(120, 170, 70, 255);
 
-            case CardColor.Blue: return Colour4.Blue;
+            case CardColor.Blue: return new Colour4(70, 120, 200, 255);
 
             default: return Colour4.Black;
         }

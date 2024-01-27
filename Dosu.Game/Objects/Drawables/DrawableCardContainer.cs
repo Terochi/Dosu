@@ -7,7 +7,7 @@ namespace Dosu.Game.Objects.Drawables;
 
 public partial class DrawableCardContainer : Container<DrawableCard>
 {
-    private const double animation_duration = 60;
+    private const double animation_duration = 350;
 
     private readonly DrawableCard drawableCard;
 
@@ -37,14 +37,14 @@ public partial class DrawableCardContainer : Container<DrawableCard>
 
     protected override bool OnHover(HoverEvent e)
     {
-        drawableCard.MoveToY(drawableCard.DrawHeight - DrawHeight, animation_duration, Easing.InQuad);
+        drawableCard.MoveToY(drawableCard.DrawHeight - DrawHeight, animation_duration, Easing.OutElastic);
 
         return true;
     }
 
     protected override void OnHoverLost(HoverLostEvent e)
     {
-        drawableCard.MoveToY(0, animation_duration, Easing.OutQuad);
+        drawableCard.MoveToY(0, animation_duration, Easing.OutElastic);
 
         base.OnHoverLost(e);
     }
