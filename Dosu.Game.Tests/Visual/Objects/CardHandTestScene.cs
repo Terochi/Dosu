@@ -11,13 +11,10 @@ namespace Dosu.Game.Tests.Visual.Objects;
 
 public partial class NewObjectTestScene : TestScene
 {
-    private CircularFlowContainer cards;
+    private readonly DrawableHand cards;
 
     public NewObjectTestScene()
     {
-        var defaultBuilder = new DrawableCardDefaultBuilder();
-        var texturedBuilder = new DrawableCardTexturedBuilder();
-
         Child = new Container
         {
             Anchor = Anchor.BottomCentre,
@@ -32,31 +29,24 @@ public partial class NewObjectTestScene : TestScene
                     RelativeSizeAxes = Axes.Both,
                     Colour = Colour4.Red
                 },
-                cards = new CircularFlowContainer
+                cards = new DrawableHand
                 {
-                    Size = new Vector2(400, 50),
-                    //RelativeSizeAxes = Axes.Both
+                    RelativeSizeAxes = Axes.Both
                 }
             }
         };
 
-        AddStep("Add random default card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour), defaultBuilder));
-        AddStep("Add random textured card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour), texturedBuilder));
+        AddStep("Add random default card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour)));
+        AddStep("Add random textured card", () => addCard((Card)Random.Shared.Next((int)Card.WildPlusFour), CardSkin.Textured));
     }
 
-    private void addCard(Card card, DrawableCardBuilder builder)
+    private void addCard(Card card, CardSkin skin = CardSkin.Default)
     {
         DrawableCardContainer drawableCard;
-        cards.Add(drawableCard = new DrawableCardContainer
+        cards.Add(drawableCard = new DrawableCardContainer(card, skin)
         {
             Origin = Anchor.BottomCentre,
-            Size = new Vector2(67, 150),
-            Child = builder.CreateCard(card).With(c =>
-            {
-                c.Origin = Anchor.BottomCentre;
-                c.Anchor = Anchor.BottomCentre;
-                c.RelativeSizeAxes = Axes.Both;
-            })
+            Size = new Vector2(67, 120),
         });
         cards.ChangeChildDepth(drawableCard, -(float)card);
         cards.SetLayoutPosition(drawableCard, (float)card);

@@ -22,8 +22,6 @@ namespace Dosu.Game.Screens
     {
         private const string username = "user_name";
 
-        private readonly DrawableCardBuilder builder = new DrawableCardTexturedBuilder();
-
         [Resolved]
         private Client client { get; set; } = null!;
 
@@ -194,9 +192,9 @@ namespace Dosu.Game.Screens
                     for (var i = 0; i < state.Cards.Count; i++)
                     {
                         int cardIndex = i;
-                        DrawableCard drawableCard = builder.CreateCard(state.Cards[cardIndex]);
-                        drawableCard.Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex));
-                        drawableCards.Add(drawableCard);
+                        //DrawableCard drawableCard = builder.CreateCard(state.Cards[cardIndex]);
+                        //drawableCard.Action = () => client.UpdateGame(new GameCommand("playCard", cardIndex));
+                        //drawableCards.Add(drawableCard);
                     }
 
                     drawableCards.Sort((e1, e2) => e1.Card - e2.Card);
@@ -214,7 +212,7 @@ namespace Dosu.Game.Screens
             if (topCard != null)
                 container.Remove(topCard, true);
 
-            topCard = builder.CreateCard(newCard);
+            //topCard = builder.CreateCard(newCard);
             topCard.Size = new Vector2(0.25f);
             topCard.Action = () => client.UpdateGame(new GameCommand("draw", null));
             container.Add(topCard);

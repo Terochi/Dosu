@@ -1,66 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 
 namespace Dosu.Game.Objects.Drawables;
 
-public partial class CircularFlowContainer : CircularFlowContainer<Drawable>
+public partial class DrawableHand : FlowContainer<DrawableCardContainer>
 {
-}
-
-public partial class CircularFlowContainer<T> : FlowContainer<T>
-    where T : Drawable
-{
-    private Vector2 size;
     private const float max_inbetween_space = 50;
-
-    public override float Height
-    {
-        get => size.Y;
-        set
-        {
-            if (size.Y == value)
-                return;
-
-            if (value <= 0)
-                return;
-
-            size.Y = value;
-
-            InvalidateLayout();
-        }
-    }
-
-    public override float Width
-    {
-        get => size.X;
-        set
-        {
-            if (size.X == value)
-                return;
-
-            if (value < 0)
-                return;
-
-            size.X = value;
-
-            InvalidateLayout();
-        }
-    }
-
-    public override Vector2 Size
-    {
-        get => size;
-        set
-        {
-            Width = value.X;
-            Height = value.Y;
-        }
-    }
 
     protected override IEnumerable<Vector2> ComputeLayoutPositions()
     {
@@ -69,11 +18,10 @@ public partial class CircularFlowContainer<T> : FlowContainer<T>
         if (childCount == 0)
             yield break;
 
-        //bool shouldBeBiggerArc = Height * 2f >= Width;
-        float width = Width;
-        //if (shouldBeBiggerArc) width -= Height;
-        float circleRadius = (4 * Height * Height + width * width) / (8 * Height);
-        float arc = 2f * MathF.Asin(width / (2f * circleRadius));
+        //bool shouldBeBiggerArc = DrawHeight * 2f >= DrawWidth;
+        //if (shouldBeBiggerArc) DrawWidth -= DrawHeight;
+        float circleRadius = (4 * DrawHeight * DrawHeight + DrawWidth * DrawWidth) / (8 * DrawHeight);
+        float arc = 2f * MathF.Asin(DrawWidth / (2f * circleRadius));
         //if (shouldBeBiggerArc) arc = MathF.Tau - arc;
 
         float arcDelta = arc / (childCount + 1);
@@ -97,7 +45,7 @@ public partial class CircularFlowContainer<T> : FlowContainer<T>
             float angle = angle0 - (i + 1) * arcDelta;
             child.Rotation = 90f - MathUtils.RadiansToDegrees(angle);
             yield return new Vector2(
-                (MathF.Cos(angle) * circleRadius + Width  * 0.5f),
+                (MathF.Cos(angle) * circleRadius + DrawWidth * 0.5f),
                 -(MathF.Sin(angle) * circleRadius - circleRadius));
         }
     }
