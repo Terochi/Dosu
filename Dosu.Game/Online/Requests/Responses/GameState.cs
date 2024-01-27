@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Dosu.Game.Objects;
+using Dosu.Game.Objects.Cards;
 
 namespace Dosu.Game.Online.Requests.Responses;
 

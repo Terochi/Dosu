@@ -7,7 +7,7 @@ using osu.Framework.Layout;
 using osuTK;
 using osuTK.Graphics;
 
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public partial class DrawableCardDefault : DrawableCard
 {

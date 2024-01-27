@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Dosu.Game.Objects;
-using Dosu.Game.Objects.Drawables;
+using Dosu.Game.Objects.Cards;
+using Dosu.Game.Objects.Cards.Drawables;
 using Dosu.Game.Online;
 using Dosu.Game.Online.Requests;
 using Dosu.Game.Online.Requests.Responses;

@@ -3,7 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
 
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public partial class DrawableCardContainer : Container<DrawableCard>
 {

@@ -1,6 +1,6 @@
 using System;
-using Dosu.Game.Objects;
-using Dosu.Game.Objects.Drawables;
+using Dosu.Game.Objects.Cards;
+using Dosu.Game.Objects.Cards.Drawables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;

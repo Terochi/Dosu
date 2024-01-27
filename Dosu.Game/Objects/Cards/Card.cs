@@ -1,6 +1,6 @@
 using osu.Framework.Graphics;
 
-namespace Dosu.Game.Objects;
+namespace Dosu.Game.Objects.Cards;
 
 public static class CardUtils
 {

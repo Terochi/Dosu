@@ -1,4 +1,4 @@
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public enum CardSkin
 {

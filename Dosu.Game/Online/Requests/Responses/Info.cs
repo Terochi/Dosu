@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Dosu.Game.Objects;
+using Dosu.Game.Objects.Cards;
 
 namespace Dosu.Game.Online.Requests.Responses;
 

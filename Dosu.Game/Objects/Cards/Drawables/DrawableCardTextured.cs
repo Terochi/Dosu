@@ -4,7 +4,7 @@ using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public partial class DrawableCardTextured : DrawableCard
 {

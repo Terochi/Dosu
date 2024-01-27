@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dosu.Game.Objects;
+using Dosu.Game.Objects.Cards;
 using Dosu.Game.Online.Requests;
 using Dosu.Game.Online.Requests.Responses;
 using SocketIOClient;

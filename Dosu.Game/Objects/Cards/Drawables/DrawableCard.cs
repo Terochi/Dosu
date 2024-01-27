@@ -1,6 +1,6 @@
 using osu.Framework.Graphics.Containers;
 
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public abstract partial class DrawableCard : ClickableContainer
 {

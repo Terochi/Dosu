@@ -5,7 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Utils;
 using osuTK;
 
-namespace Dosu.Game.Objects.Drawables;
+namespace Dosu.Game.Objects.Cards.Drawables;
 
 public partial class DrawableHand : FlowContainer<DrawableCardContainer>
 {
