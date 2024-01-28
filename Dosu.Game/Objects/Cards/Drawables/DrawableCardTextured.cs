@@ -22,7 +22,7 @@ public partial class DrawableCardTextured : DrawableCard
         InternalChild = new Sprite
         {
             RelativeSizeAxes = Axes.Both,
-            Texture = new TextureRegion(textures.Get("cards"),
+            Texture = new TextureRegion(textures.Get("dev-cards"),
                 new RectangleI(
                     (int)Card.Type() * card_texture_width, (int)Card.Color() * card_texture_height,
                     card_texture_width, card_texture_height),
