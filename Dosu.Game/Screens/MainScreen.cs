@@ -213,9 +213,9 @@ namespace Dosu.Game.Screens
                 container.Remove(topCard, true);
 
             //topCard = builder.CreateCard(newCard);
-            topCard.Size = new Vector2(0.25f);
-            topCard.Action = () => client.UpdateGame(new GameCommand("draw", null));
-            container.Add(topCard);
+            // topCard.Size = new Vector2(0.25f);
+            // topCard.Action = () => client.UpdateGame(new GameCommand("draw", null));
+            // container.Add(topCard);
         }
     }
 }

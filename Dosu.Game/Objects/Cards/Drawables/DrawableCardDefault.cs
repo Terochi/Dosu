@@ -38,22 +38,17 @@ public partial class DrawableCardDefault : DrawableCard
     {
         float height = DrawRectangle.Height;
         float border = height * 0.05f;
-        InternalChildren = new[]
+
+        Masking = true;
+        BorderThickness = border;
+        BorderColour = Colour4.White;
+        CornerRadius = border * 2;
+        InternalChildren = new Drawable[]
         {
-            new Container
+            new Box
             {
-                Masking = true,
-                BorderThickness = border,
-                BorderColour = Colour4.White,
-                CornerRadius = border * 2,
-
                 RelativeSizeAxes = Axes.Both,
-
-                Child = new Box
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Card.Color().AsColour4()
-                }
+                Colour = Card.Color().AsColour4()
             },
             new Container
             {
